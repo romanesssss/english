@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#122920">
+  <meta name="description" content="Карточки и общая проверка английских глаголов и существительных. Добавляйте свои слова и повторяйте ошибки.">
+  <title>Формы — мои английские слова</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="app.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="Формы, тренажёр английских слов">
+        <span class="brand-mark" aria-hidden="true">F<span>↗</span></span>
+        <span class="brand-text">формы<span class="brand-dot">.</span></span>
+      </div>
+      <span class="save-status"><span class="save-dot"></span>Прогресс сохранён в браузере</span>
+    </header>
+
+    <main>
+      <section class="dashboard" aria-label="Ваш прогресс">
+        <div class="stat"><span class="stat-icon mint">◎</span><div><strong id="stat-learned">0</strong><span>в работе</span></div></div>
+        <div class="stat"><span class="stat-icon peach">↺</span><div><strong id="stat-due">0</strong><span>пора повторить</span></div></div>
+        <div class="stat"><span class="stat-icon lilac">✦</span><div><strong id="stat-new">200</strong><span>ещё не изучали</span></div></div>
+        <div class="progress-stat"><div class="progress-label"><span>Ваш путь</span><strong id="progress-percent">0%</strong></div><div class="progress-track"><div id="progress-fill"></div></div><span class="progress-caption" id="progress-caption">Уверенно выучено 0 из 200 слов</span></div>
+      </section>
+
+      <nav class="tabs" aria-label="Разделы приложения">
+        <button class="tab active" type="button" data-tab="learn" aria-selected="true"><span class="tab-symbol">▣</span> Карточки</button>
+        <button class="tab" type="button" data-tab="quiz" aria-selected="false"><span class="tab-symbol">✎</span> Общая проверка</button>
+        <button class="tab" type="button" data-tab="list" aria-selected="false"><span class="tab-symbol">☷</span> Словарь</button>
+      </nav>
+
+      <section id="learn-view" class="view active" aria-label="Карточки">
+        <div class="view-heading"><div><div class="section-kicker">ЗАПОМИНАНИЕ</div><h1>Карточки</h1></div><div class="view-tools"><select id="learn-type" aria-label="Часть речи для карточек"><option value="all">Все слова</option><option value="verb">Глаголы</option><option value="noun">Существительные</option></select><div class="segmented" role="group" aria-label="Какие слова учить"><button type="button" data-learn-filter="today" class="selected">Сегодня</button><button type="button" data-learn-filter="new">Новые</button><button type="button" data-learn-filter="mistakes">Ошибки</button></div></div></div>
+        <div class="study-layout">
+          <div id="learn-content"></div>
+          <aside class="tip-card"><span class="tip-spark">✳</span><div class="tip-label">КАК УЧИТЬ</div><h3>Сначала вспомните.<br>Потом откройте.</h3><p>Для глагола вспомните формы V2 и V3. Для существительного назовите английское слово по переводу.</p><div class="tip-foot">Сложные слова вернутся в повторение <span>↗</span></div></aside>
+        </div>
+      </section>
+
+      <section id="quiz-view" class="view" aria-label="Общая проверка">
+        <div class="view-heading"><div><div class="section-kicker">ПРАКТИКА</div><h1>Общая проверка</h1></div><div class="view-tools"><select id="quiz-scope" aria-label="Слова для проверки"><option value="all">Все слова</option><option value="verb">Только глаголы</option><option value="noun">Только существительные</option></select><span class="quiz-size">До 10 слов за подход</span></div></div>
+        <div id="quiz-content"></div>
+      </section>
+
+      <section id="list-view" class="view" aria-label="Словарь">
+        <div class="view-heading"><div><div class="section-kicker">ВАШ СЛОВАРЬ</div><h1>Слова и формы</h1></div><button id="open-add" class="primary-btn" type="button">＋ Добавить слово</button></div>
+        <div id="add-panel" class="add-panel" hidden>
+          <form id="add-form" autocomplete="off">
+            <div class="form-top"><div><div class="section-kicker">НОВОЕ СЛОВО</div><h2>Добавить в словарь</h2></div><button id="close-add" class="close-btn" type="button" aria-label="Закрыть форму">×</button></div>
+            <div class="add-fields"><label class="field">Часть речи<select id="word-type" required><option value="verb">Глагол</option><option value="noun">Существительное</option></select></label><label class="field">Английское слово (V1)<input id="word-english" type="text" required maxlength="80" spellcheck="false" autocapitalize="off" placeholder="например, swim"></label><label class="field">Перевод на русский<input id="word-russian" type="text" required maxlength="160" placeholder="например, плавать"></label></div>
+            <div id="verb-fields" class="add-fields verb-fields"><label class="field">Форма V2<input id="word-past" type="text" required maxlength="120" spellcheck="false" autocapitalize="off" placeholder="например, swam"></label><label class="field">Форма V3<input id="word-participle" type="text" required maxlength="120" spellcheck="false" autocapitalize="off" placeholder="например, swum"></label></div>
+            <p class="form-help">Несколько допустимых форм разделяйте точкой с запятой.</p><div id="add-error" class="form-error" role="alert"></div><button class="primary-btn" type="submit">Сохранить слово ↗</button>
+          </form>
+        </div>
+        <div class="list-toolbar"><label class="search-wrap"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Найти слово или перевод" autocomplete="off" aria-label="Поиск по словам и переводам"></label><select id="list-type" aria-label="Часть речи"><option value="all">Все слова</option><option value="verb">Глаголы</option><option value="noun">Существительные</option><option value="mine">Мои слова</option></select><select id="list-filter" aria-label="Фильтр прогресса"><option value="all">Все статусы</option><option value="new">Ещё не изучали</option><option value="due">Пора повторить</option><option value="mistakes">С ошибками</option></select></div>
+        <div class="list-meta"><span id="list-count">200 слов</span><div><button id="export-data" type="button">Скачать резервную копию</button><button id="import-data" type="button">Загрузить копию</button><input id="import-file" type="file" accept="application/json,.json" hidden></div></div>
+        <div class="list-head"><span>СЛОВО / ПЕРЕВОД</span><span>ФОРМЫ / ЧАСТЬ РЕЧИ</span></div>
+        <div id="verb-list" class="verb-list"></div>
+      </section>
+    </main>
+
+    <footer><span>Исходные 200 глаголов — по PDF Englishweb.ru</span><span>Ваши слова и прогресс хранятся в этом браузере</span></footer>
+  </div>
+</body>
+</html>
